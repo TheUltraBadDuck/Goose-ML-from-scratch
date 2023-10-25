@@ -35,24 +35,29 @@ def main():
     # #model_obj.test()
     # #model_obj.checkAccuracy()
 
+    # def gr(x):
+    #     if x > 6:
+    #         return 1.5*x - 3
+    #     elif x > 4:
+    #         return 0.5*x + 3
+    #     else:
+    #         return 0.25*x + 4
+
     def gr(x):
-        if x > 6:
-            return x
-        elif x > 4:
-            return 0.5*x + 3
-        else:
-            return 0.25*x + 4
+        return abs(0.6 * abs(1.4 * x - 8) - 1)
 
 
     model_obj = CustomGraphData()
-    model_obj.loadData(lambda x: gr(x), 0, 10, 1000, 0.1)
+    model_obj.loadData(lambda x: gr(x), 0, 10, 500, 0.2)
     model_obj.split(test_size=0.2)
 
-    model_obj.setModel(NeuralNetwork(learning_rate=0.05, n_iters=30000,
-                                     hidden_nodes=[2, 3],
-                                     activ_func=[ReLU, ReLU, Linear],
-                                     deriv_func=[ReLU_Deriv, ReLU_Deriv, Linear_Deriv],
-                                     printing=False, running_time=10))
+    model_obj.draw()
+
+    model_obj.setModel(NeuralNetwork(learning_rate=0.01, n_iters=15000,
+                                     hidden_nodes=[3, 5, 3],
+                                     activ_func=[ReLU, ReLU, ReLU, Linear],
+                                     deriv_func=[ReLU_Deriv, ReLU_Deriv, ReLU_Deriv, Linear_Deriv],
+                                     printing=False, running_time=5))
     model_obj.train()
     model_obj.test()
     model_obj.checkAccuracy()

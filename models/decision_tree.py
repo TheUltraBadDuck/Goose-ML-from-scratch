@@ -35,11 +35,6 @@ class DecisionTree(SupervisedModel):
         return np.array([self.traverseTree(x, self.root) for x in X_test])
 
 
-
-    def makePlot(self, X_test, ax):
-        pass
-
-
     
     def growTree(self, X_train, y_train, depth=0):
 

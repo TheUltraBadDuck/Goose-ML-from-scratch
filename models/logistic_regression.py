@@ -36,14 +36,5 @@ class LogisticRegression(SupervisedModel):
         y_pred = sigmoid(z_val)
         y_pred = np.array([1 if z >= 0.5 else 0 for z in z_val])
         return y_pred
-    
-
-
-    def makePlot(self, X_test, sort_index: int = 0):
-        x_val = X_test[X_test[:, sort_index].argsort()]
-        z_val = np.add(np.dot(x_val, self.w), self.b)
-        y_val = sigmoid(z_val)
-        return y_val
-
 
 

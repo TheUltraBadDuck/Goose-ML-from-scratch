@@ -20,36 +20,6 @@ class CustomGraphData(Tool):
         self.y = np.array([func(x[0]) for x in self.X])
         self.y += np.random.normal(0, noise, size=(self.X.shape[0]))
         self.y = np.reshape(self.y, (-1, 1))
-        
-    
-
-
-    def checkAccuracy(self, feature: int = 0):
-        
-        fig, ax = plt.subplots()
-
-        ax.scatter(x=self.X_test[:, feature],
-                y=self.y_test,
-                s=16,
-                color="#8D3B72",
-                marker='o', linewidths=0)
-
-        ax.scatter(x=self.X_test[:, feature],
-                y=self.y_pred,
-                s=12,
-                color="#72e1d1",
-                marker='H', linewidths=0)
-
-        self.model.makePlot(self.X_test, self.y_pred, ax)
-        
-        ax.tick_params(axis='x', colors="#8a7090")
-        ax.tick_params(axis='y', colors="#8a7090")
-        for pos in ['top', 'bottom', 'right', 'left']:
-            ax.spines[pos].set_edgecolor("#B5D8CC")
-
-        fig.suptitle("Graph test", fontsize=16, fontweight='bold')
-        plt.show()
-
 
 
 
@@ -57,10 +27,10 @@ class CustomGraphData(Tool):
         self.model.fit(self.X_train, self.y_train)
 
 
-
     def test(self):
         self.y_pred = self.model.predict(self.X_test)
         return self.y_pred
+
 
 
 
@@ -80,7 +50,6 @@ class CustomGraphData(Tool):
         fig.suptitle("Linear data", fontsize=16, fontweight='bold')
         plt.show()
     
-
 
 
 
@@ -112,6 +81,28 @@ class CustomGraphData(Tool):
             handles = scatter.legend_elements(num=len(self.legends))[0]
             fig.legend(handles=handles, labels=self.legends, ncols=len(self.legends), loc="lower center")
 
+        plt.show()
+    
+
+    
+    def checkAccuracy(self, feature: int = 0):
+        
+        fig, ax = plt.subplots()
+
+        ax.scatter(x=self.X_test[:, feature],
+                y=self.y_test,
+                s=16,
+                color="#8D3B72",
+                marker='o', linewidths=0)
+
+        self.model.makePlot(self.X_test, ax, "", feature)
+        
+        ax.tick_params(axis='x', colors="#8a7090")
+        ax.tick_params(axis='y', colors="#8a7090")
+        for pos in ['top', 'bottom', 'right', 'left']:
+            ax.spines[pos].set_edgecolor("#B5D8CC")
+
+        fig.suptitle("Graph test", fontsize=16, fontweight='bold')
         plt.show()
 
 

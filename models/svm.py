@@ -39,13 +39,10 @@ class SVM(SupervisedModel):
 
 
 
-    def makePlot(self, X_test, ax):
-
-        id_min_x = np.argmin(X_test[:, 0])
-        id_max_x = np.argmax(X_test[:, 0])
-
-        x_0_start = X_test[id_min_x][0]
-        x_1_start = X_test[id_max_x][0]
+    def makePlot(self, X_test, ax, title, feature):
+        
+        x_0_start = np.min(X_test[:, 0])
+        x_1_start = np.max(X_test[:, 0])
 
         x_0_end = -(x_0_start * self.w[0] + self.b) / self.w[1]
         x_1_end = -(x_1_start * self.w[0] + self.b) / self.w[1]

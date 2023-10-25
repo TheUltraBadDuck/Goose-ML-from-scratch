@@ -97,23 +97,11 @@ class NeuralNetwork(SupervisedModel):
 
 
 
-
     def predict(self, X_test):
         y_pred = X_test
         for k in range(len(self.activ_func)):
             z = np.dot(y_pred, self.w[k]) + self.b[k]
             y_pred = self.activ_func[k](z)
         return y_pred
-    
-
-
-    def makePlot(self, X_test, y_pred, ax):
-        indices = np.argsort(X_test)
-
-        ax.plot(X_test[indices].reshape(-1),
-                y_pred[indices].reshape(-1),
-                linewidth=2,
-                color="#72E1D1")
-
 
 

@@ -38,7 +38,7 @@ class KMeansClustering(UnsupervisedModel):
         return self.cluster_list
 
 
-    def makePlot(self, X, y, X_transform, ax, legends):
+    def makePlot(self, X, X_transform, ax, legends):
         colors = ["#291D25", "#8A7090", "#823167", "#9D4BA2", "#FACFEC"]
         for group in range(self.k):
             ax.scatter(x=X[X_transform == group, 0],

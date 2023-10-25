@@ -47,24 +47,5 @@ class Perceptron(SupervisedModel):
         z_val = np.add(np.dot(X_test, self.w), self.b)
         y_pred = self.activ_func(z_val)
         return y_pred
-    
-
-
-    def makePlot(self, X_test, ax):
-
-        id_min_x = np.argmin(X_test[:, 0])
-        id_max_x = np.argmax(X_test[:, 0])
-
-        x_0_start = X_test[id_min_x][0]
-        x_1_start = X_test[id_max_x][0]
-
-        x_0_end   = -(x_0_start * self.w[0] + self.b) / self.w[1]
-        x_1_end   = -(x_1_start * self.w[0] + self.b) / self.w[1]
-
-        ax.plot([x_0_start, x_1_start],
-                [x_0_end,   x_1_end],
-                linewidth=2,
-                color="#72E1D1")
-
 
 
