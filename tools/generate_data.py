@@ -3,21 +3,25 @@ from sklearn import datasets
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
+from models.model import SupervisedModel, UnsupervisedModel
+
 from tools.tool import Tool
 
 
 
 class GenerateData(Tool):
 
-    def __init__(self, type: str = "", n_samples: int = 100, n_features: int = 2, centers: int = 2):
+    def __init__(self, type: str = "",
+                 n_samples: int = 100, n_features: int = 2, centers: int = 2,
+                 noise=10, random_state=4):
         # Load Iris dataset
         super().__init__()
         if len(type) > 0:
-            self.loadData(type, n_samples, n_features, centers)
+            self.loadData(type, n_samples, n_features, centers, noise, random_state)
     
 
 
-    def loadData(self, type: str, n_samples: int, n_features: int, centers: int):
+    def loadData(self, type: str, n_samples: int, n_features: int, centers: int, noise=10, random_state=4):
         self.type = type
 
         match type:
@@ -44,30 +48,33 @@ class GenerateData(Tool):
     def checkAccuracy(self):
         fig, ax = plt.subplots()
 
-        match self.type:
+        if issubclass(type(self.model), SupervisedModel):
+            match self.type:
 
-            case "regression":
-                ax.scatter(x=self.X_test[:, 0],
-                           y=self.y_test,
-                           color="#8D3B72",
-                           marker='o', linewidths=0)
-                ax.scatter(x=self.X_test[:, 0],
-                           y=self.y_pred,
-                           color="#72e1d1",
-                           marker='o', linewidths=0)
-            
-            case "blobs":
-                mask_arr = np.where(self.y_test == 0, False, True)
-                ax.scatter(x=self.X_test[mask_arr, 0],
-                           y=self.X_test[mask_arr, 1],
-                           color="#8D3B72",
-                           marker='o', linewidths=0)
-                ax.scatter(x=self.X_test[np.logical_not(mask_arr), 0],
-                           y=self.X_test[np.logical_not(mask_arr), 1],
-                           color="#8a7090",
-                           marker='o', linewidths=0)
-                self.model.makePlot(self.X_test, ax)
+                case "regression":
+                    ax.scatter(x=self.X_test[:, 0],
+                            y=self.y_test,
+                            color="#8D3B72",
+                            marker='o', linewidths=0)
+                    ax.scatter(x=self.X_test[:, 0],
+                            y=self.y_pred,
+                            color="#72e1d1",
+                            marker='o', linewidths=0)
                 
+                case "blobs":
+                    mask_arr = np.where(self.y_test == 0, False, True)
+                    ax.scatter(x=self.X_test[mask_arr, 0],
+                            y=self.X_test[mask_arr, 1],
+                            color="#8D3B72",
+                            marker='o', linewidths=0)
+                    ax.scatter(x=self.X_test[np.logical_not(mask_arr), 0],
+                            y=self.X_test[np.logical_not(mask_arr), 1],
+                            color="#8a7090",
+                            marker='o', linewidths=0)
+                    self.model.makePlot(self.X_test, ax)
+        
+        else:
+            self.model.makePlot(self.X, self.y, self.X_transform, ax, "")
         
         ax.tick_params(axis='x', colors="#8a7090")
         ax.tick_params(axis='y', colors="#8a7090")
@@ -83,24 +90,24 @@ class GenerateData(Tool):
     def draw(self):
         fig, ax = plt.subplots()
 
-        match self.type:
-
-            case "regression":
-                ax.scatter(x=self.X_train[:, 0],
-                           y=self.y_train,
-                           color="#8D3B72",
-                           marker='o', linewidths=0)
-                
-            case "blobs":
-                mask_arr = np.where(self.y_train == 0, False, True)
-                ax.scatter(x=self.X_train[mask_arr, 0],
-                           y=self.X_train[mask_arr, 1],
-                           color="#8D3B72",
-                           marker='o', linewidths=0)
-                ax.scatter(x=self.X_train[np.logical_not(mask_arr), 0],
-                           y=self.X_train[np.logical_not(mask_arr), 1],
-                           color="#8a7090",
-                           marker='o', linewidths=0)
+        if issubclass(type(self.model), SupervisedModel):
+            match self.type:
+                case "regression":
+                    ax.scatter(x=self.X_train[:, 0],
+                            y=self.y_train,
+                            color="#8D3B72",
+                            marker='o', linewidths=0)
+                case "blobs":
+                    mask_arr = np.where(self.y_train == 0, False, True)
+                    ax.scatter(x=self.X_train[mask_arr, 0],
+                            y=self.X_train[mask_arr, 1],
+                            color="#8D3B72",
+                            marker='o', linewidths=0)
+                    ax.scatter(x=self.X_train[np.logical_not(mask_arr), 0],
+                            y=self.X_train[np.logical_not(mask_arr), 1],
+                            color="#8a7090",
+                            marker='o', linewidths=0)
+    
         
         ax.tick_params(axis='x', colors="#8a7090")
         ax.tick_params(axis='y', colors="#8a7090")

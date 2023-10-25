@@ -17,7 +17,9 @@ class CustomGraphData(Tool):
         self.func = func
         self.X = np.linspace(min_x, min_y, quantity, dtype=float)
         self.X = np.reshape(self.X, (-1, 1))
-        self.y = np.array(np.random.normal(func(self.X), noise))
+        self.y = np.array([func(x[0]) for x in self.X])
+        self.y += np.random.normal(0, noise, size=(self.X.shape[0]))
+        self.y = np.reshape(self.y, (-1, 1))
         
     
 

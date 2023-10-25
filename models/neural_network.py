@@ -59,7 +59,7 @@ class NeuralNetwork(SupervisedModel):
                     z[k]     = np.dot(y[k], w[k]) + b[k]
                     y[k + 1] = self.activ_func[k](z[k])
 
-                error = y[out] - y_train
+                error = y[out] - np.reshape(y_train, (-1, 1))
                 dw = [None for _ in range(out)]
                 db = [None for _ in range(out)]
                 

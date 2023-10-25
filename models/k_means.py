@@ -34,9 +34,17 @@ class KMeansClustering(UnsupervisedModel):
                 self.centroids[group] = np.mean(X[self.cluster_list == group])
 
 
-
-
     def transform(self, X):
         return self.cluster_list
+
+
+    def makePlot(self, X, y, X_transform, ax, legends):
+        colors = ["#291D25", "#8A7090", "#823167", "#9D4BA2", "#FACFEC"]
+        for group in range(self.k):
+            ax.scatter(x=X[X_transform == group, 0],
+                       y=X[X_transform == group, 1],
+                       color=colors[group],
+                       marker='o', linewidths=0)
+            
 
 

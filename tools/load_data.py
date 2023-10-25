@@ -3,6 +3,7 @@ from sklearn import datasets
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 
+from models.model import SupervisedModel
 from tools.tool import Tool
 
 
@@ -44,84 +45,6 @@ class LoadData(Tool):
         
     
 
-
-    def checkAccuracy(self, feature: int = 0, type="scatter"):
-        
-        fig, ax = plt.subplots()
-
-        match type:
-
-            case "scatter":
-                ax.scatter(x=self.X_test[:, feature],
-                        y=self.y_test,
-                        s=16,
-                        color="#8D3B72",
-                        marker='o', linewidths=0)
-
-                ax.scatter(x=self.X_test[:, feature],
-                        y=self.y_pred,
-                        s=12,
-                        color="#72e1d1",
-                        marker='H', linewidths=0)
-                
-                ax.tick_params(axis='x', colors="#8a7090")
-                ax.tick_params(axis='y', colors="#8a7090")
-                for pos in ['top', 'bottom', 'right', 'left']:
-                    ax.spines[pos].set_edgecolor("#B5D8CC")
-            
-
-            case "heatmap":
-
-                legend_len = len(self.legends)
-
-                iris_matrix = np.zeros((legend_len, legend_len), dtype=int)
-                for i in range(len(self.y_pred)):
-                    iris_matrix[self.y_test[i], self.y_pred[i]] += 1
-
-                ax.imshow(iris_matrix, cmap=LinearSegmentedColormap.from_list("", ["#FFFFFF", "#72E1D1"]))
-
-                ax.set_xticks(np.arange(legend_len), labels=self.legends)
-                ax.set_yticks(np.arange(legend_len), labels=self.legends)
-                ax.set_xlabel("Predicted values", fontsize=14)
-                ax.set_ylabel("Actual values"   , fontsize=14)
-                for pos in ['top', 'bottom', 'right', 'left']:
-                    ax.spines[pos].set_edgecolor("#B5D8CC")
-                
-                for i in range(legend_len):
-                    for j in range(legend_len):
-                        ax.text(j, i, iris_matrix[i, j], fontsize=16, ha="center", va="center")
-
-
-            case "cluster":
-                x1 = self.X_transform[:, 0]
-                x2 = self.X_transform[:, 1]
-
-                scatter = ax.scatter(x1, x2, c=self.y,
-                                     edgecolor="none",
-                                     alpha=0.8,
-                                     cmap=ListedColormap(["#8D3B72", "#8A7090", "#89A7A7"]))
-
-                ax.tick_params(axis='x', colors="#8a7090")
-                ax.tick_params(axis='y', colors="#8a7090")
-                for pos in ['top', 'bottom', 'right', 'left']:
-                    ax.spines[pos].set_edgecolor("#B5D8CC")
-                ax.set_xlabel("Principal Component 1", fontsize=14)
-                ax.set_ylabel("Principal Component 2", fontsize=14)
-
-                if len(self.legends) > 0:
-                    handles = scatter.legend_elements(num=len(self.legends))[0]
-                    ax.legend(handles=handles, labels=self.legends, ncols=len(self.legends), loc="lower center")
-                # ax.colorbar()
-
-
-
-        fig.suptitle(self.title, fontsize=16, fontweight='bold')
-        plt.show()
-
-
-
-
-
     def draw(self, feature: int = 0):
         fig, ax = plt.subplots()
 
@@ -135,7 +58,58 @@ class LoadData(Tool):
         for pos in ['top', 'bottom', 'right', 'left']:
             ax.spines[pos].set_edgecolor("#B5D8CC")
 
-        fig.suptitle("Linear data", fontsize=16, fontweight='bold')
+        fig.suptitle(self.title, fontsize=16, fontweight='bold')
+        plt.show()
+
+
+
+    def checkAccuracy(self, feature: int = 0, type="scatter"):
+        fig, ax = plt.subplots()
+        if issubclass(type(self.model), SupervisedModel):
+            match type:
+
+                case "scatter":
+                    ax.scatter(x=self.X_test[:, feature],
+                            y=self.y_test,
+                            s=16,
+                            color="#8D3B72",
+                            marker='o', linewidths=0)
+
+                    ax.scatter(x=self.X_test[:, feature],
+                            y=self.y_pred,
+                            s=12,
+                            color="#72e1d1",
+                            marker='H', linewidths=0)
+                    
+                    ax.tick_params(axis='x', colors="#8a7090")
+                    ax.tick_params(axis='y', colors="#8a7090")
+                    for pos in ['top', 'bottom', 'right', 'left']:
+                        ax.spines[pos].set_edgecolor("#B5D8CC")
+                
+                case "heatmap":
+                    legend_len = len(self.legends)
+                    iris_matrix = np.zeros((legend_len, legend_len), dtype=int)
+                    for i in range(len(self.y_pred)):
+                        iris_matrix[self.y_test[i], self.y_pred[i]] += 1
+
+                    ax.imshow(iris_matrix, cmap=LinearSegmentedColormap.from_list("", ["#FFFFFF", "#72E1D1"]))
+
+                    ax.set_xticks(np.arange(legend_len), labels=self.legends)
+                    ax.set_yticks(np.arange(legend_len), labels=self.legends)
+                    ax.set_xlabel("Predicted values", fontsize=14)
+                    ax.set_ylabel("Actual values"   , fontsize=14)
+                    for pos in ['top', 'bottom', 'right', 'left']:
+                        ax.spines[pos].set_edgecolor("#B5D8CC")
+                    
+                    for i in range(legend_len):
+                        for j in range(legend_len):
+                            ax.text(j, i, iris_matrix[i, j], fontsize=16, ha="center", va="center")
+        else:
+            self.model.makePlot(self.X, self.y, self.X_transform, ax, self.legends)
+
+
+
+        fig.suptitle(self.title, fontsize=16, fontweight='bold')
         plt.show()
     
 
