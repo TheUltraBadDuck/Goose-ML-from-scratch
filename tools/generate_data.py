@@ -11,20 +11,20 @@ from tools.tool import Tool
 
 class GenerateData(Tool):
 
-    def __init__(self, type: str = "",
+    def __init__(self, data_type: str = "",
                  n_samples: int = 100, n_features: int = 2, centers: int = 2,
                  noise=10, random_state=4):
         # Load Iris dataset
         super().__init__()
-        if len(type) > 0:
-            self.loadData(type, n_samples, n_features, centers, noise, random_state)
+        if len(data_type) > 0:
+            self.loadData(data_type, n_samples, n_features, centers, noise, random_state)
     
 
 
-    def loadData(self, type: str, n_samples: int, n_features: int, centers: int, noise=10, random_state=4):
-        self.type = type
+    def loadData(self, data_type: str, n_samples: int, n_features: int, centers: int, noise=10, random_state=4):
+        self.type = data_type
 
-        match type:
+        match data_type:
             case "regression":
                 self.X, self.y = datasets.make_regression(n_samples=n_samples,
                                                           n_features=n_features,

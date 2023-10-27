@@ -8,6 +8,7 @@ from tools.activ_func import *
 from models.knn                  import KNN
 from models.linear_regression    import LinearRegression
 from models.logistic_regression  import LogisticRegression
+from models.softmax_regression   import SoftmaxRegression
 from models.naive_bayes          import NaiveBayes
 from models.perceptron           import Perceptron
 from models.svm                  import SVM
@@ -43,30 +44,37 @@ def main():
     #     else:
     #         return 0.25*x + 4
 
-    def gr(x):
-        return abs(0.6 * abs(1.4 * x - 8) - 1)
+    # def gr(x):
+    #     return abs(0.6 * abs(1.4 * x - 8) - 1)
 
 
-    model_obj = CustomGraphData()
-    model_obj.loadData(lambda x: gr(x), 0, 10, 500, 0.2)
-    model_obj.split(test_size=0.2)
+    # model_obj = CustomGraphData()
+    # model_obj.loadData(lambda x: gr(x), 0, 10, 500, 0.2)
+    # model_obj.split(test_size=0.2)
 
-    model_obj.draw()
+    # model_obj.draw()
 
-    model_obj.setModel(NeuralNetwork(learning_rate=0.01, n_iters=15000,
-                                     hidden_nodes=[3, 5, 3],
-                                     activ_func=[ReLU, ReLU, ReLU, Linear],
-                                     deriv_func=[ReLU_Deriv, ReLU_Deriv, ReLU_Deriv, Linear_Deriv],
-                                     printing=False, running_time=5))
+    # model_obj.setModel(NeuralNetwork(learning_rate=0.01, n_iters=15000,
+    #                                  hidden_nodes=[3, 5, 3],
+    #                                  activ_func=[ReLU, ReLU, ReLU, Linear],
+    #                                  deriv_func=[ReLU_Deriv, ReLU_Deriv, ReLU_Deriv, Linear_Deriv],
+    #                                  printing=False, running_time=5))
+    # model_obj.train()
+    # model_obj.test()
+    # model_obj.checkAccuracy()
+
+    model_obj = LoadData("wine", [0, 1, 2, 4])
+    model_obj.split(0.2)
+
+    model_obj.setModel(SoftmaxRegression(learning_rate=0.05, n_iters=1000, optimized_softmax=True))
+    model_obj.compare()
     model_obj.train()
     model_obj.test()
-    model_obj.checkAccuracy()
 
-    # model_obj = LoadData("iris")
-    # model_obj.setModel(PCA(n_components=2))
-    # model_obj.train()
-    # model_obj.transform()
-    # model_obj.checkAccuracy(type="cluster")
+    model_obj.checkAccuracy(graph_type="region", feature_x=0, feature_y=4)
+
+    #model_obj.transform()
+    #model_obj.checkAccuracy()
 
 
 

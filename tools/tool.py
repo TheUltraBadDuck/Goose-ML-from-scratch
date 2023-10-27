@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.model_selection import train_test_split
 
 from models.model import SupervisedModel, UnsupervisedModel
@@ -64,6 +65,7 @@ class Tool:
             return self.y_pred
         else:
             raise Exception("This object does not contain a supervised Model")
+
 
 
     def transform(self):

@@ -10,15 +10,15 @@ from tools.tool import Tool
 
 class LoadData(Tool):
 
-    def __init__(self, type: str = "", limit: list = []):
+    def __init__(self, data_type: str = "", limit: list = []):
         super().__init__()
-        if len(type) > 0:
-            self.loadData(type, limit)
+        if len(data_type) > 0:
+            self.loadData(data_type, limit)
     
 
 
-    def loadData(self, type: str, limit: list):
-        match type:
+    def loadData(self, data_type: str, limit: list):
+        match data_type:
             case "iris":
                 ds = datasets.load_iris()
                 self.title = "Iris Dataset"
@@ -36,11 +36,22 @@ class LoadData(Tool):
                     "Worst Radius",     "Worst Texture",     "Worst Area",      "Worst Perimeter",      "Worst Asymmetry",
                     "Worst Smoothness", "Worst Compactness", "Worst Concavity", "Worst Concave points", "Worst Symmetry")
                 self.legends = ("Benign", "Malignant")
+            
+            case "wine":
+                ds = datasets.load_wine()
+                self.title = "Wine Dataset"
+                self.feature_titles = (
+                    "Alcohol", "Malic.acid", "Ash", "Acl", "Mg", "Phenols",
+                    "Flavanoids", "Nonflavanoid.phenols", "Proanth", "Color.int", "Hue", "OD", "Proline"
+                )
+                self.legends = ("Bad", "Good", "Excellent")
+
             case _:
                 raise Exception("Need to load a property dataset, or this dataset is not available yet.")
 
         self.X = ds.data
         self.y = ds.target
+        print(self.y)
         self.limit = limit if len(limit) != 0 else [0, 1, 2, 3]
         
     
@@ -63,10 +74,43 @@ class LoadData(Tool):
 
 
 
-    def checkAccuracy(self, feature: int = 0, type="scatter"):
+    def compare(self):
+        list_len = np.clip(len(self.limit), 0, 4)
+        fig, ax = plt.subplots(list_len, list_len)
+
+        for i in range(list_len):
+            for j in range(list_len):
+
+                if i == j:
+                    ax[i, j].text(0.5, 0.5, self.feature_titles[self.limit[i]], fontsize=12, fontstyle='italic', va="center", ha="center")
+                
+                else:
+                    scatter = ax[i, j].scatter(x=self.X[:, j],
+                                               y=self.X[:, i],
+                                               c=self.y, cmap=ListedColormap(["#8D3B72", "#8A7090", "#89A7A7"]),
+                                               marker='o', linewidths=0, s=5*2**(5-list_len))
+
+                ax[i, j].get_xaxis().set_ticks([])
+                ax[i, j].get_yaxis().set_ticks([])
+                for pos in ['top', 'bottom', 'right', 'left']:
+                    ax[i, j].spines[pos].set_edgecolor("#B5D8CC")
+
+
+        fig.suptitle(self.title, fontsize=16, fontweight='bold')
+        if len(self.legends) > 0:
+            handles = scatter.legend_elements(num=len(self.legends))[0]
+            fig.legend(handles=handles, labels=self.legends, ncols=len(self.legends), loc="lower center")
+
+        plt.show()
+    
+
+
+    def checkAccuracy(self, feature: int = 0, graph_type="scatter", feature_x: int = 0, feature_y: int = 1):
+
         fig, ax = plt.subplots()
+
         if issubclass(type(self.model), SupervisedModel):
-            match type:
+            match graph_type:
 
                 case "scatter":
                     ax.scatter(x=self.X_test[:, feature],
@@ -104,46 +148,22 @@ class LoadData(Tool):
                     for i in range(legend_len):
                         for j in range(legend_len):
                             ax.text(j, i, iris_matrix[i, j], fontsize=16, ha="center", va="center")
-        else:
-            self.model.makePlot(self.X, self.y, self.X_transform, ax, self.legends)
-
-
-
-        fig.suptitle(self.title, fontsize=16, fontweight='bold')
-        plt.show()
-    
-
-
-
-
-    def compare(self):
-
-        list_len = np.clip(len(self.limit), 0, 4)
-        fig, ax = plt.subplots(list_len, list_len)
-
-        for i in range(list_len):
-            for j in range(list_len):
-
-                if i == j:
-                    ax[i, j].text(0.5, 0.5, self.feature_titles[self.limit[i]], fontsize=12, fontstyle='italic', va="center", ha="center")
                 
-                else:
-                    scatter = ax[i, j].scatter(x=self.X[:, j],
-                                               y=self.X[:, i],
-                                               c=self.y, cmap=ListedColormap(["#8D3B72", "#8A7090", "#89A7A7"]),
-                                               marker='o', linewidths=0)
+                case "region":
+                    self.model.makePlot(self.X, ax, "TTTT", [feature_x, feature_y])
+                    ax.scatter(self.X_test[:, feature_x],
+                               self.X_test[:, feature_y],
+                               c=self.y_test, s=50,
+                               cmap=ListedColormap(["#291D25", "#724B5F", "#823167", "#9D4BA2", "#FACFEC"]),
+                               linewidths=1,
+                               edgecolors="gray")
 
-                ax[i, j].get_xaxis().set_ticks([])
-                ax[i, j].get_yaxis().set_ticks([])
-                for pos in ['top', 'bottom', 'right', 'left']:
-                    ax[i, j].spines[pos].set_edgecolor("#B5D8CC")
+        else:
+            self.model.makePlot(self.X, self.X_transform, ax, self.legends)
+
 
 
         fig.suptitle(self.title, fontsize=16, fontweight='bold')
-        if len(self.legends) > 0:
-            handles = scatter.legend_elements(num=len(self.legends))[0]
-            fig.legend(handles=handles, labels=self.legends, ncols=len(self.legends), loc="lower center")
-
         plt.show()
 
 
