@@ -75,6 +75,6 @@ class SoftmaxRegression(SupervisedModel):
         # Set the axis labels and title.
         ax.set_xlabel('Feature 1')
         ax.set_ylabel('Feature 2')
-        ax.set_title('Decision Regions')
+        ax.set_title(title)
 
 

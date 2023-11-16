@@ -1,10 +1,12 @@
 import numpy as np
+from scipy.spatial import ConvexHull
 
 from models.model import UnsupervisedModel
+from tools.data_base import ColourList
 
 
 
-class KMeansClustering(UnsupervisedModel):
+class KMeans(UnsupervisedModel):
 
     def __init__(self, k=5, iters=100, plot_steps=False):
         self.k = k
@@ -38,13 +40,15 @@ class KMeansClustering(UnsupervisedModel):
         return self.cluster_list
 
 
-    def makePlot(self, X, X_transform, ax, legends):
-        colors = ["#291D25", "#8A7090", "#823167", "#9D4BA2", "#FACFEC"]
-        for group in range(self.k):
-            ax.scatter(x=X[X_transform == group, 0],
-                       y=X[X_transform == group, 1],
-                       color=colors[group],
-                       marker='o', linewidths=0)
-            
+    def makePlot(self, X, x, y, X_transform, ax):
+        for i in range(self.k):
+            mask = np.where(X_transform == i, True, False)
+            X_group = X[mask, :]
+            X_group = X_group[:, [x, y]]
+            hull = ConvexHull(X_group)
 
+            for simplex in hull.simplices:
+                ax.plot(X_group[simplex, 0], X_group[simplex, 1], color=ColourList[i], alpha=0.45)
+
+            ax.fill(X_group[hull.vertices, 0], X_group[hull.vertices, 1], color=ColourList[i], alpha=0.15)
 

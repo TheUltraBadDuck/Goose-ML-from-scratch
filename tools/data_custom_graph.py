@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 
-from tools.tool import Tool
+from tools.data_base import DataBase
 
 
 
-class CustomGraphData(Tool):
+class DataCustomGraph(DataBase):
 
     def __init__(self):
         super().__init__()
@@ -34,7 +34,7 @@ class CustomGraphData(Tool):
 
 
 
-    def draw(self, feature: int = 0):
+    def drawTrain(self, feature: int = 0):
         fig, ax = plt.subplots()
 
         ax.scatter(x=self.X_train[:, feature],
@@ -85,7 +85,7 @@ class CustomGraphData(Tool):
     
 
     
-    def checkAccuracy(self, feature: int = 0):
+    def drawTest(self, feature: int = 0):
         
         fig, ax = plt.subplots()
 

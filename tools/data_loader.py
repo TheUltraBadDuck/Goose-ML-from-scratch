@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 
 from models.model import SupervisedModel
-from tools.tool import Tool
+from tools.data_base import DataBase
 
 
 
-class LoadData(Tool):
+class DataLoader(DataBase):
 
     def __init__(self, data_type: str = "", limit: list = []):
         super().__init__()
@@ -56,7 +56,7 @@ class LoadData(Tool):
         
     
 
-    def draw(self, feature: int = 0):
+    def drawTrain(self, feature: int = 0):
         fig, ax = plt.subplots()
 
         ax.scatter(x=self.X_train[:, feature],
@@ -105,7 +105,7 @@ class LoadData(Tool):
     
 
 
-    def checkAccuracy(self, feature: int = 0, graph_type="scatter", feature_x: int = 0, feature_y: int = 1):
+    def drawTest(self, feature: int = 0, graph_type="scatter", feature_x: int = 0, feature_y: int = 1):
 
         fig, ax = plt.subplots()
 
@@ -150,7 +150,9 @@ class LoadData(Tool):
                             ax.text(j, i, iris_matrix[i, j], fontsize=16, ha="center", va="center")
                 
                 case "region":
-                    self.model.makePlot(self.X, ax, "TTTT", [feature_x, feature_y])
+                    print(self.y_test)
+                    print(self.y_pred)
+                    self.model.makePlot(self.X_test, ax, "TTTT", [feature_x, feature_y])
                     ax.scatter(self.X_test[:, feature_x],
                                self.X_test[:, feature_y],
                                c=self.y_test, s=50,

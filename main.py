@@ -1,7 +1,7 @@
 from models.model import UnsupervisedModel
-from tools.load_data         import LoadData
-from tools.generate_data     import GenerateData
-from tools.custom_graph_data import CustomGraphData
+from tools.data_loader       import DataLoader
+from tools.data_generator    import DataGenerator, GeneratorType
+from tools.data_custom_graph import DataCustomGraph
 
 from tools.activ_func import *
 
@@ -15,7 +15,7 @@ from models.svm                  import SVM
 from models.decision_tree        import DecisionTree
 from models.neural_network       import NeuralNetwork
 from models.pca                  import PCA
-from models.k_means              import KMeansClustering
+from models.kmeans               import KMeans
 
 
 
@@ -23,6 +23,15 @@ import matplotlib.pyplot as plt
 
 
 def main():
+    model_obj = DataGenerator()
+    # model_obj.loadData(GeneratorType.make_a_line([0, 0], [100, 50], 0, 150, [2.0, 3.0]))
+    model_obj.loadData(GeneratorType.make_a_group([20, 40], 0, 100, [10, 4], 30))
+    model_obj.loadData(GeneratorType.make_a_group([80, 10], 1, 100, [10, 4], 30))
+    #model_obj.drawWhole()
+
+    model_obj.setAndLearnModel(PCA(n_components=2))
+    model_obj.drawResult()
+
     # model_obj = GenerateData(type="blobs", n_samples=500, n_features=2, centers=3, noise=5)
     # #model_obj = LoadData(type="breast_cancer", limit=[0, 1, 2, 4, 5])
     # #model_obj.split(test_size=0.2, random_state=1234)
@@ -32,9 +41,9 @@ def main():
     # model_obj.setModel(KMeansClustering(iters=25, k=2))
     # model_obj.train()
     # model_obj.transform()
-    # model_obj.checkAccuracy()
+    # model_obj.drawTest()
     # #model_obj.test()
-    # #model_obj.checkAccuracy()
+    # #model_obj.drawTest()
 
     # def gr(x):
     #     if x > 6:
@@ -61,20 +70,20 @@ def main():
     #                                  printing=False, running_time=5))
     # model_obj.train()
     # model_obj.test()
-    # model_obj.checkAccuracy()
+    # model_obj.drawTest()
 
-    model_obj = LoadData("wine", [0, 1, 2, 4])
-    model_obj.split(0.2)
+    # model_obj = LoadData("wine", [0, 1, 2, 4])
+    # model_obj.split(0.2)
 
-    model_obj.setModel(SoftmaxRegression(learning_rate=0.05, n_iters=1000, optimized_softmax=True))
-    model_obj.compare()
-    model_obj.train()
-    model_obj.test()
+    # model_obj.setModel(SoftmaxRegression(learning_rate=0.05, n_iters=1000, optimized_softmax=True))
+    # model_obj.compare()
+    # model_obj.train()
+    # model_obj.test()
 
-    model_obj.checkAccuracy(graph_type="region", feature_x=0, feature_y=4)
+    # model_obj.drawTest(graph_type="region", feature_x=0, feature_y=4)
 
     #model_obj.transform()
-    #model_obj.checkAccuracy()
+    #model_obj.drawTest()
 
 
 
