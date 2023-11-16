@@ -33,6 +33,7 @@ ___
 | K-Medroids Clustering        | -        |
 | Hierarchical Clustering      | -        |
 | Principal Component Analysis | **Done** |
+| Linear Component Analysis    | **Done** |
 | Singular Value Decomposition | -        |
 
 ### Optimizers
@@ -56,8 +57,15 @@ ___
 | Save data                     | -        | -
 | Load data                     | -        | -
 | Edit data                     | -        | -
+| Normalise data                | -        | -
+| Balance data                  | -        | -
 | Data Inappropriate Warning    | -        | -
 | Graph drawing                 | **Done** | Still a little confused
+| Other Frameworks Comparisons  | -        | -
+
+## Screenshot
+
+Coming soon
 
 ## References:
 [Machine Learning from scratch](https://youtu.be/rLOyrWV8gmA)
