@@ -32,8 +32,8 @@ ___
 | K-Means Clustering           | **Done** |
 | K-Medroids Clustering        | -        |
 | Hierarchical Clustering      | -        |
-| Principal Component Analysis | **Done** |
-| Linear Component Analysis    | **Done** |
+| Principal Component Analysis | ~**Done**~ | Bugs
+| Linear Component Analysis    | ~**Done**~ | Bugs
 | Singular Value Decomposition | -        |
 
 ### Optimizers
@@ -53,7 +53,7 @@ ___
 | Model name                    | Progress | Path             |
 |-------------------------------|----------|------------------|
 | Read from input data          | Half     | Available datasets: `iris`, `breast cancer`, `wine`
-| Create data                   | -        | -
+| Create data                   | Half     | Available generators: `linear`, `group` and `spiral`
 | Save data                     | -        | -
 | Load data                     | -        | -
 | Edit data                     | -        | -
@@ -68,8 +68,8 @@ ___
 Coming soon
 
 ## References:
-[Machine Learning from scratch](https://youtu.be/rLOyrWV8gmA)
-[medium.com](https://medium.com/analytics-vidhya/this-blog-post-aims-at-explaining-the-behavior-of-different-algorithms-for-optimizing-gradient-46159a97a8c1)
+**Inspiration: [Machine Learning from scratch](https://youtu.be/rLOyrWV8gmA)** <br>
+[medium.com](https://medium.com/analytics-vidhya/this-blog-post-aims-at-explaining-the-behavior-of-different-algorithms-for-optimizing-gradient-46159a97a8c1) <br>
 [Vietnamese machine learning from scratch](https://machinelearningcoban.com/)
 
 
