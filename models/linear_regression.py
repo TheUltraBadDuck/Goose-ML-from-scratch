@@ -13,6 +13,7 @@ class LinearRegression(SupervisedModel):
 
 
     def fit(self, X_train, y_train):
+        
         self.w = np.zeros(X_train.shape[1])
         self.b = 0
         

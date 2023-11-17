@@ -16,12 +16,12 @@ class SupervisedModel:
     def _predict(self, row):
         pass
 
-    def makePlot(self, X_test, ax, title, feature):
-        min_X = np.min(X_test[:, feature])
-        max_X = np.max(X_test[:, feature])
+    def makePlot(self, X_test, y_test, y_pred, x, y, ax):
+        min_X = X_test[:, x].min()
+        max_X = X_test[:, x].max()
 
         X_graph = np.arange(min_X, max_X, 0.05)
-        y_graph = self.predict(np.reshape(X_graph, (-1, 1)))
+        y_graph = self.predict(X_graph.reshape(-1, 1))
 
         ax.plot(X_graph, y_graph, linewidth=2, color="#291D25")
 

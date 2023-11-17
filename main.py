@@ -18,19 +18,26 @@ from models.pca                  import PCA
 from models.kmeans               import KMeans
 
 
-
-import matplotlib.pyplot as plt
+from sklearn.datasets import *
 
 
 def main():
-    model_obj = DataGenerator()
-    # model_obj.loadData(GeneratorType.make_a_line([0, 0], [100, 50], 0, 150, [2.0, 3.0]))
-    model_obj.loadData(GeneratorType.make_a_group([20, 40], 0, 100, [10, 4], 30))
-    model_obj.loadData(GeneratorType.make_a_group([80, 10], 1, 100, [10, 4], 30))
-    #model_obj.drawWhole()
 
-    model_obj.setAndLearnModel(PCA(n_components=2))
-    model_obj.drawResult()
+    model_obj = DataGenerator()
+    # model_obj.loadData(GeneratorType.make_a_line([0, 0], [100, 50], 0, 300, [8, 8]))
+    # model_obj.loadData(GeneratorType.make_a_group([20, 40], 1, 180, [13, 7], 30))
+    # model_obj.loadData(GeneratorType.make_a_group([80, 10], 2, 180, [13, 7], 30))
+    model_obj.loadData(GeneratorType.make_a_roll([0, 0], 0, 500, rotating_time=2, expanding=15, angle=90, clockwise=True))
+    model_obj.loadData(GeneratorType.make_a_roll([0, 0], 1, 500, rotating_time=2, expanding=15, angle=270, clockwise=True))
+
+    model_obj.drawWhole()
+
+    model_obj.setAndLearnModel(KNN(k=5), "c", 0.2)
+    model_obj.drawResult(graph_type="scatter")
+    model_obj.drawResult(graph_type="matrix")
+
+
+
 
     # model_obj = GenerateData(type="blobs", n_samples=500, n_features=2, centers=3, noise=5)
     # #model_obj = LoadData(type="breast_cancer", limit=[0, 1, 2, 4, 5])
