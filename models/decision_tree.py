@@ -42,7 +42,8 @@ class DecisionTree(SupervisedModel):
         if (depth >= self.max_depth) or              \
                 (np.unique(y_train) == 1).all() or   \
                 (X_train.shape[0] < self.min_samples_split):
-            leaf = self.mostCommonLabel(y_train)
+            counter = Counter(y_train)
+            leaf = counter.most_common(1)[0][0]
             return Node(value = leaf)
 
         feat_i_list = np.random.choice(X_train.shape[1], self.n_feats, replace=False)
@@ -92,13 +93,6 @@ class DecisionTree(SupervisedModel):
         child_entropy = (left_i_list.shape[0] * en_l + right_i_list.shape[0] * en_r) / y_train.shape[0]
 
         return parent_entropy - child_entropy
-
-
-
-    def mostCommonLabel(self, y):
-        counter = Counter(y)
-        return counter.most_common(1)[0][0]
-
 
 
 

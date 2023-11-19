@@ -24,17 +24,26 @@ from sklearn.datasets import *
 def main():
 
     model_obj = DataGenerator()
-    # model_obj.loadData(GeneratorType.make_a_line([0, 0], [100, 50], 0, 300, [8, 8]))
-    # model_obj.loadData(GeneratorType.make_a_group([20, 40], 1, 180, [13, 7], 30))
-    # model_obj.loadData(GeneratorType.make_a_group([80, 10], 2, 180, [13, 7], 30))
-    model_obj.loadData(GeneratorType.make_a_roll([0, 0], 0, 500, rotating_time=2, expanding=15, angle=90, clockwise=True))
-    model_obj.loadData(GeneratorType.make_a_roll([0, 0], 1, 500, rotating_time=2, expanding=15, angle=270, clockwise=True))
+    #model_obj.loadData(GeneratorType.make_a_line([0, 0], [100, 50], 0, 300, [8, 8]))
+    #model_obj.loadData(GeneratorType.make_a_group([20, 40], 1, 180, [13, 3], 30))
+    #model_obj.loadData(GeneratorType.make_a_group([80, 10], 2, 180, [13, 3], 30))
+    #model_obj.loadData(GeneratorType.make_a_roll([6, 3], 0, 500, rotating_time=2, expanding=15, angle=90, clockwise=True))
+    #model_obj.loadData(GeneratorType.make_a_roll([6, 3], 1, 500, rotating_time=2, expanding=15, angle=270, clockwise=True))
+    
+    model_obj.loadData(GeneratorType.make_a_donut([0, 0], 0, 135, [0.5, 0.5], 7, -150, -30))
+    model_obj.loadData(GeneratorType.make_a_donut([-6, 8], 1, 90, [0.5, 0.5], 3, 0, 360))
+    model_obj.loadData(GeneratorType.make_a_donut([6, 8], 2, 90, [0.5, 0.5], 3, 0, 360))
+
+    model_obj.loadData(GeneratorType.make_a_line([0, 0], [0, 5], 3, 60, [0.5, 0.5]))
 
     model_obj.drawWhole()
 
-    model_obj.setAndLearnModel(KNN(k=5), "c", 0.2)
-    model_obj.drawResult(graph_type="scatter")
-    model_obj.drawResult(graph_type="matrix")
+    model_obj.setAndLearnModel(KMeans(k=3))
+    model_obj.drawResult()
+
+    # model_obj.setAndLearnModel(KNN(k=5), "c", 0.2)
+    # model_obj.drawResult(graph_type="scatter")
+    # model_obj.drawResult(graph_type="matrix")
 
 
 
